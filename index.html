@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jay-r W. Hernane | E-Portfolio</title>
+    <!-- Load Poppins Font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#4f46e5', // Indigo 600
+                        'secondary': '#14b8a6', // Teal 500
+                        'background-dark': '#1e293b', // Slate 800
+                        'text-light': '#f8fafc', // Slate 50
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Apply Poppins to the entire body */
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        /* Custom styles for smooth scrolling and hover effects */
+        .content-section {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .content-section.active {
+            display: block;
+            opacity: 1;
+        }
+        .nav-link.active {
+            background-color: #374151; /* Darker slate for active link background */
+            border-left: 4px solid #14b8a6; /* Teal border highlight */
+            color: #14b8a6;
+            font-weight: 600;
+        }
+        /* Mobile Active Link Styling */
+        .mobile-nav-link.active {
+            color: #14b8a6; /* Teal */
+            font-weight: 600;
+        }
+        
+        /* Style for the visual project cards */
+        .project-card-visual {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        .project-card-visual:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        .project-image-container {
+            border-top-left-radius: 1rem;
+            border-top-right-radius: 1rem;
+            overflow: hidden;
+            height: 150px; /* Fixed height for consistent card size */
+        }
+        .project-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .project-card-visual:hover .project-image {
+            transform: scale(1.05);
+        }
+
+        /* Certificate Card Styling */
+        .certificate-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .certificate-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .cert-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        /* Modal Styling (Lightbox) */
+        #certificate-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            z-index: 50; /* Above everything else */
+            backdrop-filter: blur(5px);
+            transition: opacity 0.3s ease;
+            padding: 20px;
+        }
+        #modal-content {
+            max-width: 95%;
+            max-height: 95%;
+            width: auto;
+            height: auto;
+            border-radius: 0.75rem;
+            object-fit: contain;
+        }
+        #modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            z-index: 51;
+            padding: 5px 10px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5);
+            line-height: 1;
+        }
+
+        /* Mobile: fixed bottom nav */
+        @media (max-width: 1023px) {
+            .mobile-nav-pad {
+                padding-bottom: 64px; /* Space for fixed bottom menu */
+            }
+        }
+    </style>
+    <!-- Lucide Icons for aesthetic appeal -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-100 dark:bg-background-dark text-slate-900 dark:text-text-light">
+
+    <!-- Main Grid Layout (Desktop) -->
+    <div class="lg:flex min-h-screen">
+        
+        <!-- Navigation Sidebar (Left Side) -->
+        <nav id="sidebar" class="hidden lg:block lg:w-72 bg-gray-800 text-text-light p-6 shadow-2xl sticky top-0 h-screen overflow-y-auto">
+            <div class="mb-10 pt-4">
+                <h2 class="text-4xl font-extrabold text-secondary tracking-wider">E-Portfolio</h2>
+                <p class="text-sm text-gray-400 mt-1">Jay-r W. Hernane</p>
+            </div>
+            
+            <ul class="space-y-2">
+                <li>
+                    <a href="#home" class="nav-link flex items-center p-3 rounded-lg text-lg hover:bg-gray-700 transition duration-150 active" data-target="home">
+                        <i data-lucide="home" class="w-5 h-5 mr-3"></i> Home
+                    </a>
+                </li>
+                <li>
+                    <a href="#about" class="nav-link flex items-center p-3 rounded-lg text-lg hover:bg-gray-700 transition duration-150" data-target="about">
+                        <i data-lucide="user" class="w-5 h-5 mr-3"></i> About
+                    </a>
+                </li>
+                <li>
+                    <a href="#education" class="nav-link flex items-center p-3 rounded-lg text-lg hover:bg-gray-700 transition duration-150" data-target="education">
+                        <i data-lucide="graduation-cap" class="w-5 h-5 mr-3"></i> Education
+                    </a>
+                </li>
+                <li>
+                    <a href="#certificates" class="nav-link flex items-center p-3 rounded-lg text-lg hover:bg-gray-700 transition duration-150" data-target="certificates">
+                        <i data-lucide="award" class="w-5 h-5 mr-3"></i> Certificates
+                    </a>
+                </li>
+                <li>
+                    <a href="#projects" class="nav-link flex items-center p-3 rounded-lg text-lg hover:bg-gray-700 transition duration-150" data-target="projects">
+                        <i data-lucide="code" class="w-5 h-5 mr-3"></i> Projects
+                    </a>
+                </li>
+                <li>
+                    <a href="#contacts" class="nav-link flex items-center p-3 rounded-lg text-lg hover:bg-gray-700 transition duration-150" data-target="contacts">
+                        <i data-lucide="mail" class="w-5 h-5 mr-3"></i> Contacts
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Contact/Social Links (Desktop Footer) -->
+            <div class="mt-12 pt-6 border-t border-gray-700">
+                <h3 class="text-xs uppercase tracking-widest font-bold text-secondary mb-3">Connect</h3>
+                <div class="flex space-x-3">
+                    <a href="https://www.facebook.com/junuun.hernane" target="_blank" class="text-gray-400 hover:text-primary transition duration-150" aria-label="Facebook">
+                        <i data-lucide="facebook" class="w-6 h-6"></i>
+                    </a>
+                    <a href="https://www.instagram.com/ig.jayrhernane?igsh=MWJlaW44cDh1cWFkNg==" target="_blank" class="text-gray-400 hover:text-primary transition duration-150" aria-label="Instagram">
+                        <i data-lucide="instagram" class="w-6 h-6"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-primary transition duration-150" aria-label="GitHub">
+                        <i data-lucide="github" class="w-6 h-6"></i>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Mobile Navigation (Fixed Bottom) -->
+        <nav id="mobile-nav" class="lg:hidden fixed bottom-0 left-0 right-0 bg-gray-800 text-text-light shadow-2xl z-20">
+            <ul class="flex justify-around items-center h-16 text-sm">
+                <li>
+                    <a href="#home" class="mobile-nav-link flex flex-col items-center p-1 text-gray-400 active" data-target="home">
+                        <i data-lucide="home" class="w-5 h-5"></i> Home
+                    </a>
+                </li>
+                <li>
+                    <a href="#about" class="mobile-nav-link flex flex-col items-center p-1 text-gray-400" data-target="about">
+                        <i data-lucide="user" class="w-5 h-5"></i> About
+                    </a>
+                </li>
+                <li>
+                    <a href="#education" class="mobile-nav-link flex flex-col items-center p-1 text-gray-400" data-target="education">
+                        <i data-lucide="graduation-cap" class="w-5 h-5"></i> Educ
+                    </a>
+                </li>
+                <li>
+                    <a href="#certificates" class="mobile-nav-link flex flex-col items-center p-1 text-gray-400" data-target="certificates">
+                        <i data-lucide="award" class="w-5 h-5"></i> Certs
+                    </a>
+                </li>
+                <li>
+                    <a href="#projects" class="mobile-nav-link flex flex-col items-center p-1 text-gray-400" data-target="projects">
+                        <i data-lucide="code" class="w-5 h-5"></i> Projs
+                    </a>
+                </li>
+                <li>
+                    <a href="#contacts" class="mobile-nav-link flex flex-col items-center p-1 text-gray-400" data-target="contacts">
+                        <i data-lucide="mail" class="w-5 h-5"></i> Contact
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area (Right Side) -->
+        <main class="flex-1 p-6 sm:p-10 lg:p-12 overflow-y-auto mobile-nav-pad">
+            
+            <header class="lg:hidden mb-8">
+                <h1 class="text-4xl font-extrabold text-primary border-b pb-2">E-Portfolio</h1>
+            </header>
+
+            <!-- Home Section -->
+            <section id="home" class="content-section active">
+                
+                <!-- Block 1: Name, Subtitle, and Instructions -->
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl mb-8 flex flex-col md:flex-row items-center text-center md:text-left">
+                    <img src="https://placehold.co/150x150/4f46e5/ffffff?text=JR" alt="Profile Picture Placeholder" class="rounded-full w-40 h-40 object-cover mb-6 md:mb-0 md:mr-8 border-4 border-secondary shadow-lg">
+                    <div class="md:ml-6">
+                        <h1 class="text-5xl font-extrabold text-gray-900 dark:text-text-light leading-tight">Jay-r W. Hernane</h1>
+                        <p class="text-2xl font-semibold text-secondary mt-1">IT Student | Beginner Web Developer</p>
+                        <p class="mt-4 text-lg text-gray-600 dark:text-gray-300 italic">
+                            Use the navigation on the left (or bottom on mobile) to explore my work.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Block 2: Portfolio Content (Welcome, What I Do, etc.) -->
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl space-y-8">
+                    
+                    <!-- Welcome Header (Modified for flow) -->
+                    <div>
+                        <h2 class="text-3xl font-extrabold text-primary mb-4 border-b pb-2">👋 Welcome to My E-Portfolio</h2>
+                        <p class="text-lg text-gray-600 dark:text-gray-300">
+                            Hi! I’m Jay-r Hernane, a BSIT 2B student currently exploring the world of technology and web development. This portfolio highlights my progress, skills, and achievements as I continue learning and improving in the IT field.
+                        </p>
+                    </div>
+                    
+                    <!-- What I Do -->
+                    <div class="space-y-3 pt-4 border-t border-gray-100 dark:border-gray-700">
+                        <h3 class="text-2xl font-bold text-secondary flex items-center">
+                            <i data-lucide="monitor-dot" class="w-6 h-6 mr-3"></i> What I Do
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300">
+                            I have foundational knowledge in:
+                        </p>
+                        <ul class="list-disc list-inside space-y-1 ml-4 text-gray-600 dark:text-gray-300">
+                            <li class="font-semibold text-slate-800 dark:text-text-light">HTML – structuring web content</li>
+                            <li class="font-semibold text-slate-800 dark:text-text-light">CSS – creating layouts and visual designs</li>
+                            <li class="font-semibold text-slate-800 dark:text-text-light">JavaScript – adding interactivity and dynamic features</li>
+                        </ul>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 pt-2">
+                            I’m constantly practicing and building small projects to sharpen my skills and grow as a developer.
+                        </p>
+                    </div>
+
+                    <!-- My Goal -->
+                    <div class="space-y-3 pt-4 border-t border-gray-100 dark:border-gray-700">
+                        <h3 class="text-2xl font-bold text-secondary flex items-center">
+                            <i data-lucide="trending-up" class="w-6 h-6 mr-3"></i> My Goal
+                        </h3>
+                        <p class="text-lg text-gray-600 dark:text-gray-300 font-semibold">
+                            To become a skilled IT professional capable of building efficient, user-friendly, and meaningful digital solutions.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Me Section (Only Bio) -->
+            <section id="about" class="content-section">
+                <h2 class="text-4xl font-bold text-primary mb-8 border-b pb-3">About Me</h2>
+                
+                <div class="space-y-10">
+                    <!-- Bio -->
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border-l-4 border-secondary">
+                        <h3 class="text-2xl font-semibold mb-3">Introduction</h3>
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                            Hi! I'm Jay-r W. Hernane, an IT student and beginner Web Developer. I enjoy creating simple, user-friendly websites using HTML, CSS, and JavaScript. I love learning new things, improving my skills, and building small projects that help me grow as a developer. My goal is to continue learning and eventually become a skilled professional in the tech field.
+                        </p>
+                        <p class="mt-4 text-gray-600 dark:text-gray-300 leading-relaxed">
+                            I am dedicated to continuous learning, particularly in front-end technologies and problem-solving. Explore the rest of my portfolio to see my educational background, certifications, and project work.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Education Section (New Dedicated Section) -->
+            <section id="education" class="content-section">
+                <h2 class="text-4xl font-bold text-primary mb-8 border-b pb-3">Education</h2>
+                
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+                    <h3 class="text-2xl font-semibold mb-4 flex items-center">
+                        <i data-lucide="graduation-cap" class="w-6 h-6 mr-3 text-secondary"></i> Academic Background
+                    </h3>
+                    <ol class="relative border-l border-gray-200 dark:border-gray-700 ml-2">
+                        <li class="mb-4 ml-4">
+                            <div class="absolute w-3 h-3 bg-primary rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-800"></div>
+                            <p class="text-lg font-semibold text-primary">Colegio De Montalban</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">2024 – Present</p>
+                            <p class="text-md">Bachelor of Science in Information Technology (BSIT)</p>
+                        </li>
+                        <li class="mb-4 ml-4">
+                            <div class="absolute w-3 h-3 bg-primary rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-800"></div>
+                            <p class="text-lg font-semibold">Southville 8b Senior High School</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">2022 – 2024</p>
+                            <p class="text-md">TVL - Electronic Product Assembly and Servicing (EPAS)</p>
+                        </li>
+                        <li class="mb-4 ml-4">
+                            <div class="absolute w-3 h-3 bg-primary rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-800"></div>
+                            <p class="text-lg font-semibold">Southville 8b National High School</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">2017 – 2022</p>
+                        </li>
+                        <li class="ml-4">
+                            <div class="absolute w-3 h-3 bg-primary rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-800"></div>
+                            <p class="text-lg font-semibold">San Isidro Labrador Elementary School</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">2011 – 2017</p>
+                        </li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- Certificates Section -->
+            <section id="certificates" class="content-section">
+                <h2 class="text-4xl font-bold text-primary mb-8 border-b pb-3">Certificates</h2>
+
+                <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                    
+                    <!-- Certificate Card: HTML -->
+                    <div class="certificate-card dark:bg-gray-800" data-certificate-url="https://i.supaimg.com/b4631a11-caac-4516-80a8-7d2c40583cb5.jpg" data-cert-title="Introduction to HTML">
+                        <img src="https://i.supaimg.com/b4631a11-caac-4516-80a8-7d2c40583cb5.jpg" 
+                             alt="HTML Certificate" 
+                             class="cert-image"
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x400/374151/ffffff?text=HTML+Certificate';">
+                        <div class="p-4">
+                            <h3 class="text-xl font-bold text-primary mb-1">Introduction to HTML</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-300">Simplilearn</p>
+                            <button class="view-cert-btn mt-3 inline-flex items-center text-secondary hover:text-primary font-medium text-sm">
+                                View Certificate <i data-lucide="maximize" class="w-4 h-4 ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Certificate Card: CSS -->
+                    <div class="certificate-card dark:bg-gray-800" data-certificate-url="https://i.supaimg.com/412281ed-4511-467f-ac8f-725a60da1963.jpg" data-cert-title="Introduction to CSS">
+                        <img src="https://i.supaimg.com/412281ed-4511-467f-ac8f-725a60da1963.jpg" 
+                             alt="CSS Certificate" 
+                             class="cert-image"
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x400/374151/ffffff?text=CSS+Certificate';">
+                        <div class="p-4">
+                            <h3 class="text-xl font-bold text-primary mb-1">Introduction to CSS</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-300">Simplilearn</p>
+                            <button class="view-cert-btn mt-3 inline-flex items-center text-secondary hover:text-primary font-medium text-sm">
+                                View Certificate <i data-lucide="maximize" class="w-4 h-4 ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Certificate Card: JavaScript -->
+                    <div class="certificate-card dark:bg-gray-800" data-certificate-url="https://i.supaimg.com/c2d91336-7419-4f3f-8922-32b766e0c4ec.jpg" data-cert-title="JavaScript Essentials">
+                        <img src="https://i.supaimg.com/c2d91336-7419-4f3f-8922-32b766e0c4ec.jpg" 
+                             alt="JavaScript Certificate" 
+                             class="cert-image"
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x400/374151/ffffff?text=JS+Certificate';">
+                        <div class="p-4">
+                            <h3 class="text-xl font-bold text-primary mb-1">JavaScript Essentials</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-300">Simplilearn</p>
+                            <button class="view-cert-btn mt-3 inline-flex items-center text-secondary hover:text-primary font-medium text-sm">
+                                View Certificate <i data-lucide="maximize" class="w-4 h-4 ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Projects Section -->
+            <section id="projects" class="content-section">
+                <h2 class="text-4xl font-bold text-primary mb-8 border-b pb-3">Projects Showcase</h2>
+                
+                <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                    
+                    <!-- Project Card: Resume Website -->
+                    <div class="project-card-visual dark:bg-gray-800 flex flex-col">
+                        <div class="project-image-container">
+                            <img src="https://i.supaimg.com/8e415fcc-e262-4c45-9924-5ffd514b63f4.jpg" 
+                                 alt="Preview of Resume Website" 
+                                 class="project-image" 
+                                 onerror="this.onerror=null; this.src='https://placehold.co/400x300/374151/ffffff?text=Resume+Website';">
+                        </div>
+                        <div class="p-5 flex flex-col justify-between flex-grow">
+                            <div>
+                                <h3 class="text-xl font-bold text-secondary mb-2">Resume Website</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                                    A collaborative web-based resume template designed to present professional and educational history in a structured, accessible format.
+                                </p>
+                            </div>
+                            <a href="https://jayr012.github.io/Collaborative-Resume/jason.html" target="_blank" class="flex items-center text-primary hover:text-secondary font-medium mt-auto">
+                                View Project <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Project Card: Student Info Form -->
+                    <div class="project-card-visual dark:bg-gray-800 flex flex-col">
+                        <div class="project-image-container">
+                            <img src="https://i.supaimg.com/d65da0c8-d6dd-46ad-8ff0-78d6cbe95b40.jpg" 
+                                 alt="Preview of Student Info Form" 
+                                 class="project-image"
+                                 onerror="this.onerror=null; this.src='https://placehold.co/400x300/374151/ffffff?text=Student+Info+Form';">
+                        </div>
+                        <div class="p-5 flex flex-col justify-between flex-grow">
+                            <div>
+                                <h3 class="text-xl font-bold text-secondary mb-2">Student Info Form</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                                    A web form designed to efficiently collect and organize student personal and academic information, showcasing clean input validation and data handling.
+                                </p>
+                            </div>
+                            <a href="https://jayr012.github.io/Student-Info/" target="_blank" class="flex items-center text-primary hover:text-secondary font-medium mt-auto">
+                                View Project <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Project Card: Calculator -->
+                    <div class="project-card-visual dark:bg-gray-800 flex flex-col">
+                        <div class="project-image-container">
+                            <img src="https://i.supaimg.com/f1727bb0-be37-4f5e-b09b-05c0de0cdc83.jpg" 
+                                 alt="Preview of Calculator" 
+                                 class="project-image"
+                                 onerror="this.onerror=null; this.src='https://placehold.co/400x300/374151/ffffff?text=Calculator';">
+                        </div>
+                        <div class="p-5 flex flex-col justify-between flex-grow">
+                            <div>
+                                <h3 class="text-xl font-bold text-secondary mb-2">Calculator</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                                    A fully functional, responsive calculator application built with JavaScript to handle basic arithmetic operations (+, -, *, /) and clear input/output.
+                                </p>
+                            </div>
+                            <a href="https://jayr012.github.io/Calculator/?authuser=0" target="_blank" class="flex items-center text-primary hover:text-secondary font-medium mt-auto">
+                                View Project <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Project Card: Digital Clock -->
+                    <div class="project-card-visual dark:bg-gray-800 flex flex-col">
+                        <div class="project-image-container">
+                            <img src="https://i.supaimg.com/beb14e1c-e9af-4e8f-ac6a-6abb632c56a7.jpg" 
+                                 alt="Preview of Digital Clock" 
+                                 class="project-image"
+                                 onerror="this.onerror=null; this.src='https://placehold.co/400x300/374151/ffffff?text=Digital+Clock';">
+                        </div>
+                        <div class="p-5 flex flex-col justify-between flex-grow">
+                            <div>
+                                <h3 class="text-xl font-bold text-secondary mb-2">Digital Clock</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                                    A real-time digital clock display application that dynamically updates the current time using JavaScript's Date object and continuous interval timing.
+                                </p>
+                            </div>
+                            <a href="https://jayr012.github.io/Digital-Clock/?authuser=0" target="_blank" class="flex items-center text-primary hover:text-secondary font-medium mt-auto">
+                                View Project <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Project Card: Student Registration Form (jQuery) -->
+                    <div class="project-card-visual dark:bg-gray-800 flex flex-col">
+                        <div class="project-image-container">
+                            <img src="https://i.supaimg.com/1f329a8c-f445-4945-bdcd-5a81aec17dd4.jpg" 
+                                 alt="Preview of Student Registration Form (jQuery)" 
+                                 class="project-image"
+                                 onerror="this.onerror=null; this.src='https://placehold.co/400x300/374151/ffffff?text=Reg+Form+jQuery';">
+                        </div>
+                        <div class="p-5 flex flex-col justify-between flex-grow">
+                            <div>
+                                <h3 class="text-xl font-bold text-secondary mb-2">Student Registration Form (jQuery)</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                                    A streamlined registration form using jQuery to enhance form submission, dynamic field management, and user interaction feedback.
+                                </p>
+                            </div>
+                            <a href="https://jayr012.github.io/StudentRegistrationForm-jQuery/?authuser=0" target="_blank" class="flex items-center text-primary hover:text-secondary font-medium mt-auto">
+                                View Project <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Project Card: Dynamic Quiz App -->
+                    <div class="project-card-visual dark:bg-gray-800 flex flex-col">
+                        <div class="project-image-container">
+                            <img src="https://i.supaimg.com/28e2197a-0502-46ae-b48a-cf3190da7742.jpg" 
+                                 alt="Preview of Dynamic Quiz App" 
+                                 class="project-image"
+                                 onerror="this.onerror=null; this.src='https://placehold.co/400x300/374151/ffffff?text=Dynamic+Quiz';">
+                        </div>
+                        <div class="p-5 flex flex-col justify-between flex-grow">
+                            <div>
+                                <h3 class="text-xl font-bold text-secondary mb-2">Dynamic Quiz App</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                                    A comprehensive quiz application that loads questions dynamically, tracks user scores, and manages the multi-step flow from start to final results.
+                                </p>
+                            </div>
+                            <a href="https://jayr012.github.io/Dynamic-Quiz/?authuser=0" target="_blank" class="flex items-center text-primary hover:text-secondary font-medium mt-auto">
+                                View Project <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Project Card: Registration Form Validator -->
+                    <div class="project-card-visual dark:bg-gray-800 flex flex-col">
+                        <div class="project-image-container">
+                            <img src="https://i.supaimg.com/43bb7608-1f00-4d32-b483-e118a4fed992.jpg" 
+                                 alt="Preview of Registration Form Validator" 
+                                 class="project-image"
+                                 onerror="this.onerror=null; this.src='https://placehold.co/400x300/374151/ffffff?text=Form+Validator';">
+                        </div>
+                        <div class="p-5 flex flex-col justify-between flex-grow">
+                            <div>
+                                <h3 class="text-xl font-bold text-secondary mb-2">Registration Form Validator</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                                    A dedicated validation tool that uses JavaScript to check and enforce complex field rules (e.g., email format, password strength) on a registration form before submission.
+                                </p>
+                            </div>
+                            <a href="https://registration-form-validator.gamer.gd/?authuser=0" target="_blank" class="flex items-center text-primary hover:text-secondary font-medium mt-auto">
+                                View Project <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contacts Section (New Dedicated Section - No Social Media) -->
+            <section id="contacts" class="content-section">
+                <h2 class="text-4xl font-bold text-primary mb-8 border-b pb-3">Contact Information</h2>
+                
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border-l-4 border-secondary max-w-lg mx-auto">
+                    <p class="text-xl font-semibold mb-4 flex items-center">
+                        <i data-lucide="contact" class="w-6 h-6 mr-3 text-secondary"></i> Get in Touch
+                    </p>
+                    <div class="space-y-3">
+                        <p class="text-gray-600 dark:text-gray-300 text-lg flex items-center">
+                            <i data-lucide="smartphone" class="w-5 h-5 mr-3 text-primary"></i> 
+                            <span class="font-semibold mr-2">Mobile 1:</span> 09285355323
+                        </p>
+                        <p class="text-gray-600 dark:text-gray-300 text-lg flex items-center">
+                            <i data-lucide="smartphone" class="w-5 h-5 mr-3 text-primary"></i> 
+                            <span class="font-semibold mr-2">Mobile 2:</span> 09922858971
+                        </p>
+                        <p class="text-sm text-gray-500 pt-4 italic">
+                            Feel free to reach out via text or call for inquiries regarding my portfolio or collaborations.
+                        </p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Footer -->
+            <footer class="mt-16 pt-6 border-t border-gray-300 dark:border-gray-700 text-center">
+                <p class="text-gray-500 dark:text-gray-400 text-sm">
+                    © 2025 Jay-r Hernane. All rights reserved.
+                </p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Certificate Modal (Lightbox) -->
+    <div id="certificate-modal" style="display: none;">
+        <span id="modal-close">×</span>
+        <img id="modal-content" src="" alt="Full Screen Certificate View">
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Get all navigation links and content sections
+        const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
+        const contentSections = document.querySelectorAll('.content-section');
+
+        // Modal elements
+        const modal = document.getElementById('certificate-modal');
+        const modalContent = document.getElementById('modal-content');
+        const modalClose = document.getElementById('modal-close');
+        const certCards = document.querySelectorAll('.certificate-card');
+
+
+        /**
+         * Toggles the active content section and updates navigation highlights.
+         * @param {string} targetId The ID of the section to show (e.g., 'home', 'about').
+         */
+        function setActiveSection(targetId) {
+            // 1. Deactivate all sections and links
+            contentSections.forEach(section => {
+                section.classList.remove('active');
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                // Ensure mobile links revert to default color
+                if (link.classList.contains('mobile-nav-link')) {
+                    link.classList.remove('text-secondary');
+                    link.classList.add('text-gray-400');
+                }
+            });
+
+            // 2. Activate the target section
+            const targetSection = document.getElementById(targetId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                window.scrollTo(0, 0); // Scroll to top for a clean transition
+            }
+
+            // 3. Highlight the active link(s)
+            navLinks.forEach(link => {
+                if (link.getAttribute('data-target') === targetId) {
+                    link.classList.add('active');
+                    // Add mobile active styling
+                    if (link.classList.contains('mobile-nav-link')) {
+                        link.classList.add('text-secondary');
+                        link.classList.remove('text-gray-400');
+                    }
+                }
+            });
+        }
+
+        // Initialize the page based on URL hash or default to 'home'
+        function initializePage() {
+            const hash = window.location.hash.replace('#', '');
+            // Check if the hash points to a valid section, otherwise default to 'home'
+            const defaultSection = (hash && document.getElementById(hash)) ? hash : 'home';
+            setActiveSection(defaultSection);
+        }
+
+        // Add event listeners to all navigation links
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('data-target');
+                if (targetId) {
+                    // Update the URL hash without reloading the page
+                    history.pushState(null, '', '#' + targetId);
+                    setActiveSection(targetId);
+                }
+            });
+        });
+
+        // --- Modal/Lightbox Logic ---
+
+        // Function to open the modal
+        function openModal(certUrl) {
+            modalContent.src = certUrl;
+            modal.style.display = 'flex';
+        }
+
+        // Event listener for certificate cards (clicking anywhere on the card)
+        certCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                // Ensure click is handled once, checking data attribute
+                const certUrl = card.getAttribute('data-certificate-url');
+                if (certUrl) {
+                    openModal(certUrl);
+                }
+            });
+        });
+
+        // Event listener to close the modal
+        modalClose.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        // Close modal when clicking outside the image
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Listen for back/forward navigation using the browser's history
+        window.addEventListener('popstate', initializePage);
+
+        // Run initialization on load
+        document.addEventListener('DOMContentLoaded', initializePage);
+    </script>
+</body>
+</html>
