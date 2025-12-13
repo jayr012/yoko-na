@@ -5,21 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jay-r W. Hernane | E-Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'primary': '#4f46e5', // Indigo 600
-                        'secondary': '#14b8a6', // Teal 500
-                        'background-dark': '#1e293b', // Slate 800
-                        'text-light': '#f8fafc', // Slate 50
-                    }
-                }
-            }
-        }
-    </script>
+    
+    <link href="styles.css" rel="stylesheet">
+
     <style>
         /* Apply Poppins to the entire body */
         body {
@@ -36,8 +24,9 @@
             opacity: 1;
         }
         .nav-link.active {
-            background-color: #374151; /* Darker slate for active link background */
-            border-left: 4px solid #14b8a6; /* Teal border highlight */
+            /* These styles now use static CSS which is fast */
+            background-color: #374151; 
+            border-left: 4px solid #14b8a6; 
             color: #14b8a6;
             font-weight: 600;
         }
