@@ -352,12 +352,13 @@
                                 <button class="view-cert-btn inline-flex items-center text-secondary hover:text-primary font-medium text-sm">
                                     View <i data-lucide="maximize" class="w-4 h-4 ml-1"></i>
                                 </button>
-                                <button class="download-cert-btn inline-flex items-center text-primary hover:text-secondary font-medium text-sm"
-                                        data-download-url="https://i.supaimg.com/49a4545d-7352-4f68-9af1-b1b2bfebea4e.jpg"
-                                        data-filename="Jayr_W_Hernane_Introduction_to_HTML_Simplilearn.jpg">
+                                <a href="https://i.supaimg.com/49a4545d-7352-4f68-9af1-b1b2bfebea4e.jpg" 
+                                   download="Jayr_W_Hernane_Introduction_to_HTML_Simplilearn.jpg"
+                                   target="_blank"
+                                   class="inline-flex items-center text-primary hover:text-secondary font-medium text-sm">
                                     <i data-lucide="download" class="w-4 h-4 mr-1"></i> Download
-                                </button>
-                                </div>
+                                </a>
+                            </div>
                         </div>
                     </div>
 
@@ -373,12 +374,13 @@
                                 <button class="view-cert-btn inline-flex items-center text-secondary hover:text-primary font-medium text-sm">
                                     View <i data-lucide="maximize" class="w-4 h-4 ml-1"></i>
                                 </button>
-                                <button class="download-cert-btn inline-flex items-center text-primary hover:text-secondary font-medium text-sm"
-                                        data-download-url="https://i.supaimg.com/42f69db0-1801-4ba8-a61b-93df957c4049.jpg"
-                                        data-filename="Jayr_W_Hernane_Introduction_to_CSS_Simplilearn.jpg">
+                                <a href="https://i.supaimg.com/42f69db0-1801-4ba8-a61b-93df957c4049.jpg" 
+                                   download="Jayr_W_Hernane_Introduction_to_CSS_Simplilearn.jpg"
+                                   target="_blank"
+                                   class="inline-flex items-center text-primary hover:text-secondary font-medium text-sm">
                                     <i data-lucide="download" class="w-4 h-4 mr-1"></i> Download
-                                </button>
-                                </div>
+                                </a>
+                            </div>
                         </div>
                     </div>
                     
@@ -394,12 +396,13 @@
                                 <button class="view-cert-btn inline-flex items-center text-secondary hover:text-primary font-medium text-sm">
                                     View <i data-lucide="maximize" class="w-4 h-4 ml-1"></i>
                                 </button>
-                                <button class="download-cert-btn inline-flex items-center text-primary hover:text-secondary font-medium text-sm"
-                                        data-download-url="https://i.supaimg.com/63ac67be-d6ee-4bc6-90e2-eec96c8f0532.jpg"
-                                        data-filename="Jayr_W_Hernane_JavaScript_Essentials_Simplilearn.jpg">
+                                <a href="https://i.supaimg.com/63ac67be-d6ee-4bc6-90e2-eec96c8f0532.jpg" 
+                                   download="Jayr_W_Hernane_JavaScript_Essentials_Simplilearn.jpg"
+                                   target="_blank"
+                                   class="inline-flex items-center text-primary hover:text-secondary font-medium text-sm">
                                     <i data-lucide="download" class="w-4 h-4 mr-1"></i> Download
-                                </button>
-                                </div>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -612,9 +615,7 @@
         const modalContent = document.getElementById('modal-content');
         const modalClose = document.getElementById('modal-close');
         const certCards = document.querySelectorAll('.certificate-card');
-        const viewCertBtns = document.querySelectorAll('.view-cert-btn'); // New selector for view buttons
-        // NEW: Download button selector
-        const downloadCertBtns = document.querySelectorAll('.download-cert-btn');
+        const viewCertBtns = document.querySelectorAll('.view-cert-btn'); // Selector for view buttons
 
 
         /**
@@ -697,7 +698,7 @@
         }
 
 
-        // --- Modal/Lightbox Logic (MODIFIED to only open on 'View' button click) ---
+        // --- Modal/Lightbox Logic (To view certificate images) ---
 
         // Function to open the modal
         function openModal(certUrl) {
@@ -734,56 +735,6 @@
                 modal.style.display = 'none';
             }
         });
-        
-        // --- NEW: Download Logic ---
-
-        /**
-         * Downloads a file from a given URL using the Fetch API and creating a Blob.
-         * This is necessary for reliable cross-origin downloads.
-         * @param {string} url The URL of the file to download.
-         * @param {string} filename The desired filename for the downloaded file.
-         */
-        function downloadFile(url, filename) {
-            fetch(url)
-                .then(response => response.blob())
-                .then(blob => {
-                    // Create a URL for the blob
-                    const blobUrl = window.URL.createObjectURL(blob);
-                    
-                    // Create a temporary anchor element
-                    const a = document.createElement('a');
-                    a.href = blobUrl;
-                    a.download = filename;
-                    
-                    // Programmatically click the anchor to trigger download
-                    document.body.appendChild(a);
-                    a.click();
-                    
-                    // Clean up the temporary elements
-                    document.body.removeChild(a);
-                    window.URL.revokeObjectURL(blobUrl);
-                })
-                .catch(error => {
-                    console.error('Download failed:', error);
-                    alert('Failed to download the certificate. Please try the "View" button and save the image manually.');
-                });
-        }
-
-        // Event listener for all download buttons
-        downloadCertBtns.forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.preventDefault();
-                const certUrl = button.getAttribute('data-download-url');
-                const filename = button.getAttribute('data-filename');
-                
-                if (certUrl && filename) {
-                    downloadFile(certUrl, filename);
-                }
-            });
-        });
-        
-        // --- END NEW Download Logic ---
-
 
         // Run initialization on load
         document.addEventListener('DOMContentLoaded', initializePage);
