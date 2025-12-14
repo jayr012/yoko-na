@@ -352,11 +352,11 @@
                                 <button class="view-cert-btn inline-flex items-center text-secondary hover:text-primary font-medium text-sm">
                                     View <i data-lucide="maximize" class="w-4 h-4 ml-1"></i>
                                 </button>
-                                <a href="https://i.supaimg.com/49a4545d-7352-4f68-9af1-b1b2bfebea4e.jpg" 
-                                   download="Jayr_W_Hernane_Introduction_to_HTML_Simplilearn.jpg"
-                                   target="_blank" class="inline-flex items-center text-primary hover:text-secondary font-medium text-sm">
+                                <button class="download-cert-btn inline-flex items-center text-primary hover:text-secondary font-medium text-sm"
+                                        data-download-url="https://i.supaimg.com/49a4545d-7352-4f68-9af1-b1b2bfebea4e.jpg"
+                                        data-file-name="Jayr_W_Hernane_Introduction_to_HTML_Simplilearn.jpg">
                                     <i data-lucide="download" class="w-4 h-4 mr-1"></i> Download
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -373,11 +373,11 @@
                                 <button class="view-cert-btn inline-flex items-center text-secondary hover:text-primary font-medium text-sm">
                                     View <i data-lucide="maximize" class="w-4 h-4 ml-1"></i>
                                 </button>
-                                <a href="https://i.supaimg.com/42f69db0-1801-4ba8-a61b-93df957c4049.jpg" 
-                                   download="Jayr_W_Hernane_Introduction_to_CSS_Simplilearn.jpg"
-                                   target="_blank" class="inline-flex items-center text-primary hover:text-secondary font-medium text-sm">
+                                <button class="download-cert-btn inline-flex items-center text-primary hover:text-secondary font-medium text-sm"
+                                        data-download-url="https://i.supaimg.com/42f69db0-1801-4ba8-a61b-93df957c4049.jpg"
+                                        data-file-name="Jayr_W_Hernane_Introduction_to_CSS_Simplilearn.jpg">
                                     <i data-lucide="download" class="w-4 h-4 mr-1"></i> Download
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -394,11 +394,11 @@
                                 <button class="view-cert-btn inline-flex items-center text-secondary hover:text-primary font-medium text-sm">
                                     View <i data-lucide="maximize" class="w-4 h-4 ml-1"></i>
                                 </button>
-                                <a href="https://i.supaimg.com/63ac67be-d6ee-4bc6-90e2-eec96c8f0532.jpg" 
-                                   download="Jayr_W_Hernane_JavaScript_Essentials_Simplilearn.jpg"
-                                   target="_blank" class="inline-flex items-center text-primary hover:text-secondary font-medium text-sm">
+                                <button class="download-cert-btn inline-flex items-center text-primary hover:text-secondary font-medium text-sm"
+                                        data-download-url="https://i.supaimg.com/63ac67be-d6ee-4bc6-90e2-eec96c8f0532.jpg"
+                                        data-file-name="Jayr_W_Hernane_JavaScript_Essentials_Simplilearn.jpg">
                                     <i data-lucide="download" class="w-4 h-4 mr-1"></i> Download
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -612,7 +612,7 @@
         const modalContent = document.getElementById('modal-content');
         const modalClose = document.getElementById('modal-close');
         const certCards = document.querySelectorAll('.certificate-card');
-        const viewCertBtns = document.querySelectorAll('.view-cert-btn'); // New selector for view buttons
+        const viewCertBtns = document.querySelectorAll('.view-cert-btn'); // Selector for view buttons
 
 
         /**
@@ -695,7 +695,7 @@
         }
 
 
-        // --- Modal/Lightbox Logic (MODIFIED to only open on 'View' button click) ---
+        // --- Modal/Lightbox Logic ---
 
         // Function to open the modal
         function openModal(certUrl) {
@@ -732,6 +732,61 @@
                 modal.style.display = 'none';
             }
         });
+
+        // --- Download Logic (NEW: Force cross-origin download using Fetch API) ---
+
+        /**
+         * Forces a cross-origin download of a file by fetching it as a Blob.
+         * @param {string} url The URL of the file to download.
+         * @param {string} filename The desired name for the downloaded file.
+         */
+        async function forceDownload(url, filename) {
+            try {
+                // 1. Fetch the resource.
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                // 2. Get the response body as a Blob
+                const blob = await response.blob();
+
+                // 3. Create a temporary URL for the Blob
+                const blobUrl = URL.createObjectURL(blob);
+
+                // 4. Create a temporary anchor element
+                const tempLink = document.createElement('a');
+                tempLink.style.display = 'none';
+                tempLink.href = blobUrl;
+                tempLink.download = filename; // Set the desired file name
+
+                // 5. Append to body, click it, and remove it
+                document.body.appendChild(tempLink);
+                tempLink.click();
+                document.body.removeChild(tempLink);
+
+                // 6. Release the Blob URL
+                URL.revokeObjectURL(blobUrl);
+
+            } catch (error) {
+                console.error('Download failed:', error);
+                alert('Download failed! The browser blocked the direct download. Please try the "View" button and then right-click/long-press "Save Image As...".');
+            }
+        }
+
+        // Event listener for the new Download buttons
+        const downloadCertBtns = document.querySelectorAll('.download-cert-btn');
+        downloadCertBtns.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault(); 
+                const url = button.getAttribute('data-download-url');
+                const filename = button.getAttribute('data-file-name');
+                if (url && filename) {
+                    forceDownload(url, filename);
+                }
+            });
+        });
+
 
         // Run initialization on load
         document.addEventListener('DOMContentLoaded', initializePage);
