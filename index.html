@@ -7,14 +7,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
+        // --- UPDATED COLOR PALETTE: VIOLET & WHITE ---
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        'primary': '#4f46e5', // Indigo 600
-                        'secondary': '#14b8a6', // Teal 500
-                        'background-dark': '#1e293b', // Slate 800
-                        'text-light': '#f8fafc', // Slate 50
+                        'primary': '#7c3aed', // Violet 600 (Main Accent)
+                        'secondary': '#a78bfa', // Violet 400 (Secondary Accent)
+                        'container-light': '#f5f3ff', // Very light purple for content boxes
                     }
                 }
             }
@@ -24,36 +24,45 @@
         /* Apply Poppins to the entire body */
         body {
             font-family: 'Poppins', sans-serif;
+            /* Added margin-top to account for fixed header */
+            padding-top: 80px; 
         }
-        /* --- MODIFICATION START --- */
-        /* Remove single-section display logic for scrollable page */
-        /* The content-section class is kept but the display/opacity rules are removed/modified */
+        
+        /* Removed old sidebar/mobile nav styles */
         .content-section {
-            /* Now all sections are visible and transition is irrelevant */
-            padding-top: 40px; /* Add some space between sections for readability */
+            padding-top: 40px; 
         }
         .content-section:first-of-type {
             padding-top: 0;
         }
 
-        /* --- MODIFICATION END --- */
-
-        /* Custom styles for smooth scrolling and hover effects */
+        /* Styles for the new top navigation links */
+        .nav-link {
+            position: relative;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-weight: 500;
+            color: #374151; /* Dark text for contrast */
+        }
         .nav-link.active {
-            background-color: #374151; /* Darker slate for active link background */
-            border-left: 4px solid #14b8a6; /* Teal border highlight */
-            color: #14b8a6;
-            font-weight: 600;
+            color: '#7c3aed'; /* Primary violet color for active link */
+            font-weight: 700;
         }
-        /* Mobile Active Link Styling */
-        .mobile-nav-link.active {
-            color: #14b8a6; /* Teal */
-            font-weight: 600;
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 3px;
+            background-color: '#7c3aed';
+            border-radius: 2px;
         }
-        
+
         /* Style for the visual project cards */
         .project-card-visual {
-            background-color: white;
+            /* Inherits bg-container-light from Tailwind class */
             border-radius: 1rem;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
@@ -66,7 +75,7 @@
             border-top-left-radius: 1rem;
             border-top-right-radius: 1rem;
             overflow: hidden;
-            height: 150px; /* Fixed height for consistent card size */
+            height: 150px; 
         }
         .project-image {
             width: 100%;
@@ -80,11 +89,10 @@
 
         /* Certificate Card Styling */
         .certificate-card {
-            background-color: white;
+            /* Inherits bg-container-light from Tailwind class */
             border-radius: 0.75rem;
             overflow: hidden;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
-            /* Removed cursor: pointer to prevent opening modal on card area click */
             transition: transform 0.2s, box-shadow 0.2s;
         }
         .certificate-card:hover {
@@ -98,6 +106,19 @@
             border-bottom: 1px solid #e5e7eb;
         }
 
+        /* --- NEW: Style for the JH logo --- */
+        .logo-text {
+            color: #ffffff; /* White text */
+            background-color: #7c3aed; /* Primary violet background */
+            font-size: 1.5rem; /* Larger font size */
+            font-weight: 800; /* Extra bold */
+            padding: 4px 10px; /* Padding inside the box */
+            border-radius: 8px; /* Rounded corners */
+            letter-spacing: 0.1em; /* Slight letter spacing */
+            line-height: 1;
+            display: inline-block;
+        }
+
         /* Modal Styling (Lightbox) */
         #certificate-modal {
             position: fixed;
@@ -106,10 +127,10 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.9);
-            display: none; /* Hidden by default */
+            display: none; 
             justify-content: center;
             align-items: center;
-            z-index: 50; /* Above everything else */
+            z-index: 50; 
             backdrop-filter: blur(5px);
             transition: opacity 0.3s ease;
             padding: 20px;
@@ -135,463 +156,434 @@
             background: rgba(0, 0, 0, 0.5);
             line-height: 1;
         }
+        
+        /* Overlay Menu Styles */
+        #overlay-menu {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(100%);
+        }
+        #overlay-menu.open {
+            transform: translateX(0);
+            pointer-events: auto;
+        }
 
-        /* Mobile: fixed bottom nav */
+        /* Adjust body padding for small screens */
         @media (max-width: 1023px) {
-            .mobile-nav-pad {
-                padding-bottom: 64px; /* Space for fixed bottom menu */
+            body {
+                padding-top: 64px; /* Slightly less height on mobile */
             }
         }
     </style>
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-gray-100 dark:bg-background-dark text-slate-900 dark:text-text-light">
+<body class="bg-white text-gray-900">
 
-    <div class="lg:flex min-h-screen">
-        
-        <nav id="sidebar" class="hidden lg:block lg:w-72 bg-gray-800 text-text-light p-6 shadow-2xl sticky top-0 h-screen overflow-y-auto">
-            <div class="mb-10 pt-4">
-                <h2 class="text-4xl font-extrabold text-secondary tracking-wider">Jay-r Hernane</h2>
+    <header id="main-header" class="fixed top-0 left-0 right-0 bg-white shadow-xl z-30">
+        <div class="container mx-auto px-6 lg:px-12 py-3 flex justify-between items-center h-16">
+            <a href="#home" class="transition-colors duration-150">
+                <span class="logo-text">JH</span>
+            </a>
+            <nav class="hidden lg:block">
+                <ul class="flex space-x-6">
+                    <li><a href="#home" class="nav-link transition active">Home</a></li>
+                    <li><a href="#about" class="nav-link transition">About</a></li>
+                    <li><a href="#education" class="nav-link transition">Education</a></li>
+                    <li><a href="#certificates" class="nav-link transition">Certificates</a></li>
+                    <li><a href="#projects" class="nav-link transition">Projects</a></li>
+                    <li><a href="#contacts" class="nav-link transition">Contacts</a></li>
+                </ul>
+            </nav>
 
+            <button id="menu-toggle" class="p-2 rounded-lg text-primary hover:bg-gray-100 transition lg:hidden">
+                <i data-lucide="menu" class="w-7 h-7"></i>
+            </button>
+        </div>
+    </header>
+
+    <div id="overlay-menu" class="fixed inset-0 bg-white z-40 lg:hidden">
+        <div class="p-6 h-full flex flex-col">
+            <div class="flex justify-between items-center mb-10 mt-2">
+                <h2 class="text-3xl font-extrabold text-primary tracking-wider">Navigation</h2>
+                <button id="menu-close" class="p-2 rounded-lg text-primary hover:bg-gray-100 transition">
+                    <i data-lucide="x" class="w-8 h-8"></i>
+                </button>
             </div>
-            
-            <ul class="space-y-2">
-                <li>
-                    <a href="#home" class="nav-link flex items-center p-3 rounded-lg text-lg hover:bg-gray-700 transition duration-150 active">
-                        <i data-lucide="home" class="w-5 h-5 mr-3"></i> Home
-                    </a>
-                </li>
-                <li>
-                    <a href="#about" class="nav-link flex items-center p-3 rounded-lg text-lg hover:bg-gray-700 transition duration-150">
-                        <i data-lucide="user" class="w-5 h-5 mr-3"></i> About
-                    </a>
-                </li>
-                <li>
-                    <a href="#education" class="nav-link flex items-center p-3 rounded-lg text-lg hover:bg-gray-700 transition duration-150">
-                        <i data-lucide="graduation-cap" class="w-5 h-5 mr-3"></i> Education
-                    </a>
-                </li>
-                <li>
-                    <a href="#certificates" class="nav-link flex items-center p-3 rounded-lg text-lg hover:bg-gray-700 transition duration-150">
-                        <i data-lucide="award" class="w-5 h-5 mr-3"></i> Certificates
-                    </a>
-                </li>
-                <li>
-                    <a href="#projects" class="nav-link flex items-center p-3 rounded-lg text-lg hover:bg-gray-700 transition duration-150">
-                        <i data-lucide="code" class="w-5 h-5 mr-3"></i> Projects
-                    </a>
-                </li>
-                <li>
-                    <a href="#contacts" class="nav-link flex items-center p-3 rounded-lg text-lg hover:bg-gray-700 transition duration-150">
-                        <i data-lucide="mail" class="w-5 h-5 mr-3"></i> Contacts
-                    </a>
-                </li>
-            </ul>
 
-            <div class="mt-12 pt-6 border-t border-gray-700">
+            <nav>
+                <ul class="space-y-4 text-2xl font-semibold">
+                    <li><a href="#home" class="nav-link-mobile block p-3 rounded-lg text-gray-800 hover:bg-gray-100 transition active">Home</a></li>
+                    <li><a href="#about" class="nav-link-mobile block p-3 rounded-lg text-gray-800 hover:bg-gray-100 transition">About</a></li>
+                    <li><a href="#education" class="nav-link-mobile block p-3 rounded-lg text-gray-800 hover:bg-gray-100 transition">Education</a></li>
+                    <li><a href="#certificates" class="nav-link-mobile block p-3 rounded-lg text-gray-800 hover:bg-gray-100 transition">Certificates</a></li>
+                    <li><a href="#projects" class="nav-link-mobile block p-3 rounded-lg text-gray-800 hover:bg-gray-100 transition">Projects</a></li>
+                    <li><a href="#contacts" class="nav-link-mobile block p-3 rounded-lg text-gray-800 hover:bg-gray-100 transition">Contacts</a></li>
+                </ul>
+            </nav>
+
+            <div class="mt-auto pt-8 border-t border-gray-200">
                 <h3 class="text-xs uppercase tracking-widest font-bold text-secondary mb-3">Connect</h3>
-                <div class="flex space-x-3">
+                <div class="flex space-x-6">
                     <a href="https://www.facebook.com/junuun.hernane" target="_blank" class="text-gray-400 hover:text-primary transition duration-150" aria-label="Facebook">
-                        <i data-lucide="facebook" class="w-6 h-6"></i>
+                        <i data-lucide="facebook" class="w-8 h-8"></i>
                     </a>
                     <a href="https://www.instagram.com/ig.jayrhernane?igsh=MWJlaW44cDh1cWFkNg==" target="_blank" class="text-gray-400 hover:text-primary transition duration-150" aria-label="Instagram">
-                        <i data-lucide="instagram" class="w-6 h-6"></i>
+                        <i data-lucide="instagram" class="w-8 h-8"></i>
                     </a>
                     <a href="#" class="text-gray-400 hover:text-primary transition duration-150" aria-label="GitHub">
-                        <i data-lucide="github" class="w-6 h-6"></i>
+                        <i data-lucide="github" class="w-8 h-8"></i>
                     </a>
                 </div>
             </div>
-        </nav>
-        
-        <nav id="mobile-nav" class="lg:hidden fixed bottom-0 left-0 right-0 bg-gray-800 text-text-light shadow-2xl z-20">
-            <ul class="flex justify-around items-center h-16 text-sm">
-                <li>
-                    <a href="#home" class="mobile-nav-link flex flex-col items-center p-1 text-gray-400 active">
-                        <i data-lucide="home" class="w-5 h-5"></i> Home
-                    </a>
-                </li>
-                <li>
-                    <a href="#about" class="mobile-nav-link flex flex-col items-center p-1 text-gray-400">
-                        <i data-lucide="user" class="w-5 h-5"></i> About
-                    </a>
-                </li>
-                <li>
-                    <a href="#education" class="mobile-nav-link flex flex-col items-center p-1 text-gray-400">
-                        <i data-lucide="graduation-cap" class="w-5 h-5"></i> Educ
-                    </a>
-                </li>
-                <li>
-                    <a href="#certificates" class="mobile-nav-link flex flex-col items-center p-1 text-gray-400">
-                        <i data-lucide="award" class="w-5 h-5"></i> Certs
-                    </a>
-                </li>
-                <li>
-                    <a href="#projects" class="mobile-nav-link flex flex-col items-center p-1 text-gray-400">
-                        <i data-lucide="code" class="w-5 h-5"></i> Projs
-                    </a>
-                </li>
-                <li>
-                    <a href="#contacts" class="mobile-nav-link flex flex-col items-center p-1 text-gray-400">
-                        <i data-lucide="mail" class="w-5 h-5"></i> Contact
-                    </a>
-                </li>
-            </ul>
-        </nav>
-
-        <main class="flex-1 p-6 sm:p-10 lg:p-12 overflow-y-auto mobile-nav-pad">
-            
-            <header class="lg:hidden mb-8">
-                <h1 class="text-4xl font-extrabold text-primary border-b pb-2">E-Portfolio</h1>
-            </header>
-
-            <section id="home" class="content-section">
-                
-                <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl mb-8 flex flex-col md:flex-row items-center text-center md:text-left">
-                    <img src="https://i.supaimg.com/e2934466-8de7-456d-a459-7694e0987444.jpg" alt="Jay-r Hernane Profile Picture" class="rounded-full w-40 h-40 object-cover mb-6 md:mb-0 md:mr-8 border-4 border-secondary shadow-lg">
-                    <div class="md:ml-6">
-                        <h1 class="text-5xl font-extrabold text-gray-900 dark:text-text-light leading-tight">Jay-r W. Hernane</h1>
-                        <p class="text-2xl font-semibold text-secondary mt-1">IT Student | Beginner Web Developer</p>
-                        <p class="mt-4 text-lg text-gray-600 dark:text-gray-300 italic">
-                            Use the navigation on the left (or bottom on mobile) to explore my work.
-                        </p>
-                    </div>
-                </div>
-            </section>
-
-            <section id="about" class="content-section">
-                <h2 class="text-4xl font-bold text-primary mb-8 border-b pb-3">About Me</h2>
-                
-                <div class="space-y-10">
-                    <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl space-y-8">
-                    
-                    <div>
-                        <h2 class="text-3xl font-extrabold text-primary mb-4 border-b pb-2">👋 Welcome to My E-Portfolio</h2>
-                        <p class="text-lg text-gray-600 dark:text-gray-300">
-                            Hi! I’m Jay-r Hernane, a BSIT 2B student at Colegio de Montalban. Currently exploring the world of technology and web development. This portfolio highlights my progress, skills, and achievements as I continue learning and improving in the IT field.
-                        </p>
-                    </div>
-                    
-                    <div class="space-y-3 pt-4 border-t border-gray-100 dark:border-gray-700">
-                        <h3 class="text-2xl font-bold text-secondary flex items-center">
-                            <i data-lucide="monitor-dot" class="w-6 h-6 mr-3"></i> What I Do
-                        </h3>
-                        <p class="text-gray-600 dark:text-gray-300">
-                            I have foundational knowledge in:
-                        </p>
-                        <ul class="list-disc list-inside space-y-1 ml-4 text-gray-600 dark:text-gray-300">
-                            <li class="font-semibold text-slate-800 dark:text-text-light">HTML – structuring web content</li>
-                            <li class="font-semibold text-slate-800 dark:text-text-light">CSS – creating layouts and visual designs</li>
-                            <li class="font-semibold text-slate-800 dark:text-text-light">JavaScript – adding interactivity and dynamic features</li>
-                        </ul>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 pt-2">
-                            I’m constantly practicing and building small projects to sharpen my skills and grow as a developer.
-                        </p>
-                    </div>
-
-                    <div class="space-y-3 pt-4 border-t border-gray-100 dark:border-gray-700">
-                        <h3 class="text-2xl font-bold text-secondary flex items-center">
-                            <i data-lucide="trending-up" class="w-6 h-6 mr-3"></i> My Goal
-                        </h3>
-                        <p class="text-lg text-gray-600 dark:text-gray-300 font-semibold">
-                            To become a skilled IT professional capable of building efficient, user-friendly, and meaningful digital solutions.
-                        </p>
-                    </div>
-                </div>
-                </div>
-            </section>
-
-            <section id="education" class="content-section">
-                <h2 class="text-4xl font-bold text-primary mb-8 border-b pb-3">Education</h2>
-                
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
-                    <h3 class="text-2xl font-semibold mb-4 flex items-center">
-                        <i data-lucide="graduation-cap" class="w-6 h-6 mr-3 text-secondary"></i> Academic Background
-                    </h3>
-                    <ol class="relative border-l border-gray-200 dark:border-gray-700 ml-2">
-                        <li class="mb-4 ml-4">
-                            <div class="absolute w-3 h-3 bg-primary rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-800"></div>
-                            <p class="text-lg font-semibold text-primary">Colegio De Montalban</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">2024 – Present</p>
-                            <p class="text-md">Bachelor of Science in Information Technology (BSIT)</p>
-                        </li>
-                        <li class="mb-4 ml-4">
-                            <div class="absolute w-3 h-3 bg-primary rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-800"></div>
-                            <p class="text-lg font-semibold">Southville 8b Senior High School</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">2022 – 2024</p>
-                            <p class="text-md">TVL - Electronic Product Assembly and Servicing (EPAS)</p>
-                        </li>
-                        <li class="mb-4 ml-4">
-                            <div class="absolute w-3 h-3 bg-primary rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-800"></div>
-                            <p class="text-lg font-semibold">Southville 8b National High School</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">2017 – 2022</p>
-                        </li>
-                        <li class="ml-4">
-                            <div class="absolute w-3 h-3 bg-primary rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-800"></div>
-                            <p class="text-lg font-semibold">San Isidro Labrador Elementary School</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">2011 – 2017</p>
-                        </li>
-                    </ol>
-                </div>
-            </section>
-
-            <section id="certificates" class="content-section">
-                <h2 class="text-4xl font-bold text-primary mb-8 border-b pb-3">Certificates</h2>
-
-                <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                    
-                    <div class="certificate-card dark:bg-gray-800" data-certificate-url="https://i.supaimg.com/49a4545d-7352-4f68-9af1-b1b2bfebea4e.jpg" data-cert-title="HTML Essentials (Cisco)">
-                        <img src="https://i.supaimg.com/49a4545d-7352-4f68-9af1-b1b2bfebea4e.jpg" 
-                             alt="HTML Certificate" 
-                             class="cert-image"
-                             onerror="this.onerror=null; this.src='https://placehold.co/600x400/374151/ffffff?text=HTML+Certificate';">
-                        <div class="p-4">
-                            <h3 class="text-xl font-bold text-primary mb-1">HTML Essentials (Cisco)</h3>
-                            <p class="text-sm text-gray-600 dark:text-gray-300">Cisco Networking Academy</p>
-                            <div class="mt-3 flex justify-between items-center">
-                                <button class="view-cert-btn inline-flex items-center text-secondary hover:text-primary font-medium text-sm">
-                                    View <i data-lucide="maximize" class="w-4 h-4 ml-1"></i>
-                                </button>
-                                <button class="download-cert-btn inline-flex items-center text-primary hover:text-secondary font-medium text-sm"
-                                        data-download-url="./certificates/HTML_Essentials_certificate_jayrhernane012-gmail-com_011c34ba-ac39-44e8-aff4-4d9d490e4afd.pdf"
-                                        data-file-name="Jayr_W_Hernane_HTML_Essentials_Cisco.pdf">
-                                    <i data-lucide="download" class="w-4 h-4 mr-1"></i> Download
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="certificate-card dark:bg-gray-800" data-certificate-url="https://i.supaimg.com/42f69db0-1801-4ba8-a61b-93df957c4049.jpg" data-cert-title="CSS Essentials (Cisco)">
-                        <img src="https://i.supaimg.com/42f69db0-1801-4ba8-a61b-93df957c4049.jpg" 
-                             alt="CSS Certificate" 
-                             class="cert-image"
-                             onerror="this.onerror=null; this.src='https://placehold.co/600x400/374151/ffffff?text=CSS+Certificate';">
-                        <div class="p-4">
-                            <h3 class="text-xl font-bold text-primary mb-1">CSS Essentials (Cisco)</h3>
-                            <p class="text-sm text-gray-600 dark:text-gray-300">Cisco Networking Academy</p>
-                            <div class="mt-3 flex justify-between items-center">
-                                <button class="view-cert-btn inline-flex items-center text-secondary hover:text-primary font-medium text-sm">
-                                    View <i data-lucide="maximize" class="w-4 h-4 ml-1"></i>
-                                </button>
-                                <button class="download-cert-btn inline-flex items-center text-primary hover:text-secondary font-medium text-sm"
-                                        data-download-url="./certificates/CSS_Essentials_certificate_jayrhernane012-gmail-com_99fdc7ac-11dc-448a-ae40-a96f1ac505e1.pdf"
-                                        data-file-name="Jayr_W_Hernane_CSS_Essentials_Cisco.pdf">
-                                    <i data-lucide="download" class="w-4 h-4 mr-1"></i> Download
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="certificate-card dark:bg-gray-800" data-certificate-url="https://i.supaimg.com/63ac67be-d6ee-4bc6-90e2-eec96c8f0532.jpg" data-cert-title="JavaScript Essentials 1 (Cisco)">
-                        <img src="https://i.supaimg.com/63ac67be-d6ee-4bc6-90e2-eec96c8f0532.jpg" 
-                             alt="JavaScript Certificate" 
-                             class="cert-image"
-                             onerror="this.onerror=null; this.src='https://placehold.co/600x400/374151/ffffff?text=JS+Certificate';">
-                        <div class="p-4">
-                            <h3 class="text-xl font-bold text-primary mb-1">JavaScript Essentials 1 (Cisco)</h3>
-                            <p class="text-sm text-gray-600 dark:text-gray-300">Cisco Networking Academy</p>
-                            <div class="mt-3 flex justify-between items-center">
-                                <button class="view-cert-btn inline-flex items-center text-secondary hover:text-primary font-medium text-sm">
-                                    View <i data-lucide="maximize" class="w-4 h-4 ml-1"></i>
-                                </button>
-                                <button class="download-cert-btn inline-flex items-center text-primary hover:text-secondary font-medium text-sm"
-                                        data-download-url="./certificates/JavaScript_Essentials_1_certificate_jayrhernane012-gmail-com_7387bc47-7196-4afb-bab2-391943abcbb2.pdf"
-                                        data-file-name="Jayr_W_Hernane_JavaScript_Essentials_1_Cisco.pdf">
-                                    <i data-lucide="download" class="w-4 h-4 mr-1"></i> Download
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="projects" class="content-section">
-                <h2 class="text-4xl font-bold text-primary mb-8 border-b pb-3">Projects Showcase</h2>
-                
-                <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                    
-                    <div class="project-card-visual dark:bg-gray-800 flex flex-col">
-                        <div class="project-image-container">
-                            <img src="https://i.supaimg.com/8e415fcc-e262-4c45-9924-5ffd514b63f4.jpg" 
-                                 alt="Preview of Resume Website" 
-                                 class="project-image" 
-                                 onerror="this.onerror=null; this.src='https://placehold.co/400x300/374151/ffffff?text=Resume+Website';">
-                        </div>
-                        <div class="p-5 flex flex-col justify-between flex-grow">
-                            <div>
-                                <h3 class="text-xl font-bold text-secondary mb-2">Resume Website</h3>
-                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
-                                    A collaborative web-based resume template designed to present professional and educational history in a structured, accessible format.
-                                </p>
-                            </div>
-                            <a href="https://jayr012.github.io/Collaborative-Resume/jason.html" target="_blank" class="flex items-center text-primary hover:text-secondary font-medium mt-auto">
-                                View Project <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="project-card-visual dark:bg-gray-800 flex flex-col">
-                        <div class="project-image-container">
-                            <img src="https://i.supaimg.com/d65da0c8-d6dd-46ad-8ff0-78d6cbe95b40.jpg" 
-                                 alt="Preview of Student Info Form" 
-                                 class="project-image"
-                                 onerror="this.onerror=null; this.src='https://placehold.co/400x300/374151/ffffff?text=Student+Info+Form';">
-                        </div>
-                        <div class="p-5 flex flex-col justify-between flex-grow">
-                            <div>
-                                <h3 class="text-xl font-bold text-secondary mb-2">Student Info Form</h3>
-                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
-                                    A web form designed to efficiently collect and organize student personal and academic information, showcasing clean input validation and data handling.
-                                </p>
-                            </div>
-                            <a href="https://jayr012.github.io/Student-Info/" target="_blank" class="flex items-center text-primary hover:text-secondary font-medium mt-auto">
-                                View Project <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="project-card-visual dark:bg-gray-800 flex flex-col">
-                        <div class="project-image-container">
-                            <img src="https://i.supaimg.com/f1727bb0-be37-4f5e-b09b-05c0de0cdc83.jpg" 
-                                 alt="Preview of Calculator" 
-                                 class="project-image"
-                                 onerror="this.onerror=null; this.src='https://placehold.co/400x300/374151/ffffff?text=Calculator';">
-                        </div>
-                        <div class="p-5 flex flex-col justify-between flex-grow">
-                            <div>
-                                <h3 class="text-xl font-bold text-secondary mb-2">Calculator</h3>
-                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
-                                    A fully functional, responsive calculator application built with JavaScript to handle basic arithmetic operations (+, -, *, /) and clear input/output.
-                                </p>
-                            </div>
-                            <a href="https://jayr012.github.io/Calculator/?authuser=0" target="_blank" class="flex items-center text-primary hover:text-secondary font-medium mt-auto">
-                                View Project <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="project-card-visual dark:bg-gray-800 flex flex-col">
-                        <div class="project-image-container">
-                            <img src="https://i.supaimg.com/beb14e1c-e9af-4e8f-ac6a-6abb632c56a7.jpg" 
-                                 alt="Preview of Digital Clock" 
-                                 class="project-image"
-                                 onerror="this.onerror=null; this.src='https://placehold.co/400x300/374151/ffffff?text=Digital+Clock';">
-                        </div>
-                        <div class="p-5 flex flex-col justify-between flex-grow">
-                            <div>
-                                <h3 class="text-xl font-bold text-secondary mb-2">Digital Clock</h3>
-                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
-                                    A real-time digital clock display application that dynamically updates the current time using JavaScript's Date object and continuous interval timing.
-                                </p>
-                            </div>
-                            <a href="https://jayr012.github.io/Digital-Clock/?authuser=0" target="_blank" class="flex items-center text-primary hover:text-secondary font-medium mt-auto">
-                                View Project <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="project-card-visual dark:bg-gray-800 flex flex-col">
-                        <div class="project-image-container">
-                            <img src="https://i.supaimg.com/1f329a8c-f445-4945-bdcd-5a81aec17dd4.jpg" 
-                                 alt="Preview of Student Registration Form (jQuery)" 
-                                 class="project-image"
-                                 onerror="this.onerror=null; this.src='https://placehold.co/400x300/374151/ffffff?text=Reg+Form+jQuery';">
-                        </div>
-                        <div class="p-5 flex flex-col justify-between flex-grow">
-                            <div>
-                                <h3 class="text-xl font-bold text-secondary mb-2">Student Registration Form (jQuery)</h3>
-                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
-                                    A streamlined registration form using jQuery to enhance form submission, dynamic field management, and user interaction feedback.
-                                </p>
-                            </div>
-                            <a href="https://jayr012.github.io/StudentRegistrationForm-jQuery/?authuser=0" target="_blank" class="flex items-center text-primary hover:text-secondary font-medium mt-auto">
-                                View Project <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="project-card-visual dark:bg-gray-800 flex flex-col">
-                        <div class="project-image-container">
-                            <img src="https://i.supaimg.com/28e2197a-0502-46ae-b48a-cf3190da7742.jpg" 
-                                 alt="Preview of Dynamic Quiz App" 
-                                 class="project-image"
-                                 onerror="this.onerror=null; this.src='https://placehold.co/400x300/374151/ffffff?text=Dynamic+Quiz';">
-                        </div>
-                        <div class="p-5 flex flex-col justify-between flex-grow">
-                            <div>
-                                <h3 class="text-xl font-bold text-secondary mb-2">Dynamic Quiz App</h3>
-                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
-                                    A comprehensive quiz application that loads questions dynamically, tracks user scores, and manages the multi-step flow from start to final results.
-                                </p>
-                            </div>
-                            <a href="https://jayr012.github.io/Dynamic-Quiz/?authuser=0" target="_blank" class="flex items-center text-primary hover:text-secondary font-medium mt-auto">
-                                View Project <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="project-card-visual dark:bg-gray-800 flex flex-col">
-                        <div class="project-image-container">
-                            <img src="https://i.supaimg.com/43bb7608-1f00-4d32-b483-e118a4fed992.jpg" 
-                                 alt="Preview of Registration Form Validator" 
-                                 class="project-image"
-                                 onerror="this.onerror=null; this.src='https://placehold.co/400x300/374151/ffffff?text=Form+Validator';">
-                        </div>
-                        <div class="p-5 flex flex-col justify-between flex-grow">
-                            <div>
-                                <h3 class="text-xl font-bold text-secondary mb-2">Registration Form Validator</h3>
-                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
-                                    A dedicated validation tool that uses JavaScript to check and enforce complex field rules (e.g., email format, password strength) on a registration form before submission.
-                                </p>
-                            </div>
-                            <a href="https://registration-form-validator.gamer.gd/?authuser=0" target="_blank" class="flex items-center text-primary hover:text-secondary font-medium mt-auto">
-                                View Project <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="contacts" class="content-section">
-                <h2 class="text-4xl font-bold text-primary mb-8 border-b pb-3">Contact Information</h2>
-                
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border-l-4 border-secondary max-w-lg mx-auto">
-                    <p class="text-xl font-semibold mb-4 flex items-center">
-                        <i data-lucide="contact" class="w-6 h-6 mr-3 text-secondary"></i> Get in Touch
-                    </p>
-                    <div class="space-y-3">
-                        <p class="text-gray-600 dark:text-gray-300 text-lg flex items-center">
-                            <i data-lucide="smartphone" class="w-5 h-5 mr-3 text-primary"></i> 
-                            <span class="font-semibold mr-2">Mobile 1:</span> 09285355323
-                        </p>
-                        <p class="text-gray-600 dark:text-gray-300 text-lg flex items-center">
-                            <i data-lucide="smartphone" class="w-5 h-5 mr-3 text-primary"></i> 
-                            <span class="font-semibold mr-2">Mobile 2:</span> 09922858971
-                        </p>
-                        <p class="text-gray-600 dark:text-gray-300 text-lg flex items-center">
-                            <i data-lucide="mail" class="w-5 h-5 mr-3 text-primary"></i> 
-                            <span class="font-semibold mr-2">Email 1:</span> 
-                            <a href="mailto:jayrhernane111@gmail.com" class="hover:text-secondary transition duration-150">jayrhernane111@gmail.com</a>
-                        </p>
-                        <p class="text-gray-600 dark:text-gray-300 text-lg flex items-center">
-                            <i data-lucide="mail" class="w-5 h-5 mr-3 text-primary"></i> 
-                            <span class="font-semibold mr-2">Email 2:</span> 
-                            <a href="mailto:jayrhernane012@gmail.com" class="hover:text-secondary transition duration-150">jayrhernane012@gmail.com</a>
-                        </p>
-                        <p class="text-sm text-gray-500 pt-4 italic">
-                            Feel free to reach out via text or call for inquiries regarding my portfolio or collaborations.
-                        </p>
-                    </div>
-                </div>
-            </section>
-            
-            <footer class="mt-16 pt-6 border-t border-gray-300 dark:border-gray-700 text-center">
-                <p class="text-gray-500 dark:text-gray-400 text-sm">
-                    © 2025 Jay-r Hernane. All rights reserved.
-                </p>
-            </footer>
-        </main>
+        </div>
     </div>
+    <main class="container mx-auto px-6 lg:px-12 pb-10">
+        
+        <section id="home" class="content-section pt-0">
+            
+            <div class="bg-container-light p-8 rounded-xl shadow-xl mb-8 flex flex-col md:flex-row items-center text-center md:text-left">
+                <img src="https://i.supaimg.com/e2934466-8de7-456d-a459-7694e0987444.jpg" alt="Jay-r Hernane Profile Picture" class="rounded-full w-40 h-40 object-cover mb-6 md:mb-0 md:mr-8 border-4 border-secondary shadow-lg">
+                <div class="md:ml-6">
+                    <h1 class="text-5xl font-extrabold text-gray-900 leading-tight">Jay-r W. Hernane</h1>
+                    <p class="text-2xl font-semibold text-primary mt-1">IT Student | Beginner Web Developer</p>
+                    <p class="mt-4 text-lg text-gray-600 italic">
+                        Use the navigation above to explore my work.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="content-section">
+            <h2 class="text-4xl font-bold text-primary mb-8 border-b pb-3">About Me</h2>
+            
+            <div class="space-y-10">
+                <div class="bg-container-light p-8 rounded-xl shadow-xl space-y-8">
+                
+                <div>
+                    <h2 class="text-3xl font-extrabold text-primary mb-4 border-b pb-2">👋 Welcome to My E-Portfolio</h2>
+                    <p class="text-lg text-gray-600">
+                        Hi! I’m Jay-r Hernane, a BSIT 2B student at Colegio de Montalban. Currently exploring the world of technology and web development. This portfolio highlights my progress, skills, and achievements as I continue learning and improving in the IT field.
+                    </p>
+                </div>
+                
+                <div class="space-y-3 pt-4 border-t border-gray-100">
+                    <h3 class="text-2xl font-bold text-secondary flex items-center">
+                        <i data-lucide="monitor-dot" class="w-6 h-6 mr-3"></i> What I Do
+                    </h3>
+                    <p class="text-gray-600">
+                        I have foundational knowledge in:
+                    </p>
+                    <ul class="list-disc list-inside space-y-1 ml-4 text-gray-600">
+                        <li class="font-semibold text-slate-800">HTML – structuring web content</li>
+                        <li class="font-semibold text-slate-800">CSS – creating layouts and visual designs</li>
+                        <li class="font-semibold text-slate-800">JavaScript – adding interactivity and dynamic features</li>
+                    </ul>
+                    <p class="text-sm text-gray-500 pt-2">
+                        I’m constantly practicing and building small projects to sharpen my skills and grow as a developer.
+                    </p>
+                </div>
+
+                <div class="space-y-3 pt-4 border-t border-gray-100">
+                    <h3 class="text-2xl font-bold text-secondary flex items-center">
+                        <i data-lucide="trending-up" class="w-6 h-6 mr-3"></i> My Goal
+                    </h3>
+                    <p class="text-lg text-gray-600 font-semibold">
+                        To become a skilled IT professional capable of building efficient, user-friendly, and meaningful digital solutions.
+                    </p>
+                </div>
+            </div>
+            </div>
+        </section>
+
+        <section id="education" class="content-section">
+            <h2 class="text-4xl font-bold text-primary mb-8 border-b pb-3">Education</h2>
+            
+            <div class="bg-container-light p-6 rounded-xl shadow-lg">
+                <h3 class="text-2xl font-semibold mb-4 flex items-center">
+                    <i data-lucide="graduation-cap" class="w-6 h-6 mr-3 text-secondary"></i> Academic Background
+                </h3>
+                <ol class="relative border-l border-gray-200 ml-2">
+                    <li class="mb-4 ml-4">
+                        <div class="absolute w-3 h-3 bg-primary rounded-full mt-1.5 -left-1.5 border border-white"></div>
+                        <p class="text-lg font-semibold text-primary">Colegio De Montalban</p>
+                        <p class="text-sm text-gray-500">2024 – Present</p>
+                        <p class="text-md">Bachelor of Science in Information Technology (BSIT)</p>
+                    </li>
+                    <li class="mb-4 ml-4">
+                        <div class="absolute w-3 h-3 bg-primary rounded-full mt-1.5 -left-1.5 border border-white"></div>
+                        <p class="text-lg font-semibold">Southville 8b Senior High School</p>
+                        <p class="text-sm text-gray-500">2022 – 2024</p>
+                        <p class="text-md">TVL - Electronic Product Assembly and Servicing (EPAS)</p>
+                    </li>
+                    <li class="mb-4 ml-4">
+                        <div class="absolute w-3 h-3 bg-primary rounded-full mt-1.5 -left-1.5 border border-white"></div>
+                        <p class="text-lg font-semibold">Southville 8b National High School</p>
+                        <p class="text-sm text-gray-500">2017 – 2022</p>
+                    </li>
+                    <li class="ml-4">
+                        <div class="absolute w-3 h-3 bg-primary rounded-full mt-1.5 -left-1.5 border border-white"></div>
+                        <p class="text-lg font-semibold">San Isidro Labrador Elementary School</p>
+                        <p class="text-sm text-gray-500">2011 – 2017</p>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="certificates" class="content-section">
+            <h2 class="text-4xl font-bold text-primary mb-8 border-b pb-3">Certificates</h2>
+
+            <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                
+                <div class="certificate-card bg-container-light" data-certificate-url="https://i.supaimg.com/49a4545d-7352-4f68-9af1-b1b2bfebea4e.jpg" data-cert-title="HTML Essentials (Cisco)">
+                    <img src="https://i.supaimg.com/49a4545d-7352-4f68-9af1-b1b2bfebea4e.jpg" 
+                         alt="HTML Certificate" 
+                         class="cert-image"
+                         onerror="this.onerror=null; this.src='https://placehold.co/600x400/374151/ffffff?text=HTML+Certificate';">
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold text-primary mb-1">HTML Essentials (Cisco)</h3>
+                        <p class="text-sm text-gray-600">Cisco Networking Academy</p>
+                        <div class="mt-3 flex justify-between items-center w-full">
+                            <button class="view-cert-btn inline-flex items-center text-secondary hover:text-primary font-medium text-sm">
+                                View <i data-lucide="maximize" class="w-4 h-4 ml-1"></i>
+                            </button>
+                            <button class="download-cert-btn inline-flex items-center text-primary hover:text-secondary font-medium text-sm"
+                                    data-download-url="./certificates/HTML_Essentials_certificate_jayrhernane012-gmail-com_011c34ba-ac39-44e8-aff4-4d9d490e4afd.pdf"
+                                    data-file-name="Jayr_W_Hernane_HTML_Essentials_Cisco.pdf">
+                                <i data-lucide="download" class="w-4 h-4 mr-1"></i> Download
+                            </button>
+                        </div>
+                        </div>
+                </div>
+
+                <div class="certificate-card bg-container-light" data-certificate-url="https://i.supaimg.com/42f69db0-1801-4ba8-a61b-93df957c4049.jpg" data-cert-title="CSS Essentials (Cisco)">
+                    <img src="https://i.supaimg.com/42f69db0-1801-4ba8-a61b-93df957c4049.jpg" 
+                         alt="CSS Certificate" 
+                         class="cert-image"
+                         onerror="this.onerror=null; this.src='https://placehold.co/600x400/374151/ffffff?text=CSS+Certificate';">
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold text-primary mb-1">CSS Essentials (Cisco)</h3>
+                        <p class="text-sm text-gray-600">Cisco Networking Academy</p>
+                        <div class="mt-3 flex justify-between items-center w-full">
+                            <button class="view-cert-btn inline-flex items-center text-secondary hover:text-primary font-medium text-sm">
+                                View <i data-lucide="maximize" class="w-4 h-4 ml-1"></i>
+                            </button>
+                            <button class="download-cert-btn inline-flex items-center text-primary hover:text-secondary font-medium text-sm"
+                                    data-download-url="./certificates/CSS_Essentials_certificate_jayrhernane012-gmail-com_99fdc7ac-11dc-448a-ae40-a96f1ac505e1.pdf"
+                                    data-file-name="Jayr_W_Hernane_CSS_Essentials_Cisco.pdf">
+                                <i data-lucide="download" class="w-4 h-4 mr-1"></i> Download
+                            </button>
+                        </div>
+                        </div>
+                </div>
+                
+                <div class="certificate-card bg-container-light" data-certificate-url="https://i.supaimg.com/63ac67be-d6ee-4bc6-90e2-eec96c8f0532.jpg" data-cert-title="JavaScript Essentials 1 (Cisco)">
+                    <img src="https://i.supaimg.com/63ac67be-d6ee-4bc6-90e2-eec96c8f0532.jpg" 
+                         alt="JavaScript Certificate" 
+                         class="cert-image"
+                         onerror="this.onerror=null; this.src='https://placehold.co/600x400/374151/ffffff?text=JS+Certificate';">
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold text-primary mb-1">JavaScript Essentials 1 (Cisco)</h3>
+                        <p class="text-sm text-gray-600">Cisco Networking Academy</p>
+                        <div class="mt-3 flex justify-between items-center w-full">
+                            <button class="view-cert-btn inline-flex items-center text-secondary hover:text-primary font-medium text-sm">
+                                View <i data-lucide="maximize" class="w-4 h-4 ml-1"></i>
+                            </button>
+                            <button class="download-cert-btn inline-flex items-center text-primary hover:text-secondary font-medium text-sm"
+                                    data-download-url="./certificates/JavaScript_Essentials_1_certificate_jayrhernane012-gmail-com_7387bc47-7196-4afb-bab2-391943abcbb2.pdf"
+                                    data-file-name="Jayr_W_Hernane_JavaScript_Essentials_1_Cisco.pdf">
+                                <i data-lucide="download" class="w-4 h-4 mr-1"></i> Download
+                            </button>
+                        </div>
+                        </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="content-section">
+            <h2 class="text-4xl font-bold text-primary mb-8 border-b pb-3">Projects Showcase</h2>
+            
+            <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                
+                <div class="project-card-visual bg-container-light flex flex-col">
+                    <div class="project-image-container">
+                        <img src="https://i.supaimg.com/8e415fcc-e262-4c45-9924-5ffd514b63f4.jpg" 
+                             alt="Preview of Resume Website" 
+                             class="project-image" 
+                             onerror="this.onerror=null; this.src='https://placehold.co/400x300/374151/ffffff?text=Resume+Website';">
+                    </div>
+                    <div class="p-5 flex flex-col justify-between flex-grow">
+                        <div>
+                            <h3 class="text-xl font-bold text-secondary mb-2">Resume Website</h3>
+                            <p class="text-sm text-gray-600 mb-4">
+                                A collaborative web-based resume template designed to present professional and educational history in a structured, accessible format.
+                            </p>
+                        </div>
+                        <a href="https://jayr012.github.io/Collaborative-Resume/jason.html" target="_blank" class="flex items-center text-primary hover:text-secondary font-medium mt-auto">
+                            View Project <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="project-card-visual bg-container-light flex flex-col">
+                    <div class="project-image-container">
+                        <img src="https://i.supaimg.com/d65da0c8-d6dd-46ad-8ff0-78d6cbe95b40.jpg" 
+                             alt="Preview of Student Info Form" 
+                             class="project-image"
+                             onerror="this.onerror=null; this.src='https://placehold.co/400x300/374151/ffffff?text=Student+Info+Form';">
+                    </div>
+                    <div class="p-5 flex flex-col justify-between flex-grow">
+                        <div>
+                            <h3 class="text-xl font-bold text-secondary mb-2">Student Info Form</h3>
+                            <p class="text-sm text-gray-600 mb-4">
+                                A web form designed to efficiently collect and organize student personal and academic information, showcasing clean input validation and data handling.
+                            </p>
+                        </div>
+                        <a href="https://jayr012.github.io/Student-Info/" target="_blank" class="flex items-center text-primary hover:text-secondary font-medium mt-auto">
+                            View Project <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="project-card-visual bg-container-light flex flex-col">
+                    <div class="project-image-container">
+                        <img src="https://i.supaimg.com/f1727bb0-be37-4f5e-b09b-05c0de0cdc83.jpg" 
+                             alt="Preview of Calculator" 
+                             class="project-image"
+                             onerror="this.onerror=null; this.src='https://placehold.co/400x300/374151/ffffff?text=Calculator';">
+                    </div>
+                    <div class="p-5 flex flex-col justify-between flex-grow">
+                        <div>
+                            <h3 class="text-xl font-bold text-secondary mb-2">Calculator</h3>
+                            <p class="text-sm text-gray-600 mb-4">
+                                A fully functional, responsive calculator application built with JavaScript to handle basic arithmetic operations (+, -, *, /) and clear input/output.
+                            </p>
+                        </div>
+                        <a href="https://jayr012.github.io/Calculator/?authuser=0" target="_blank" class="flex items-center text-primary hover:text-secondary font-medium mt-auto">
+                            View Project <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="project-card-visual bg-container-light flex flex-col">
+                    <div class="project-image-container">
+                        <img src="https://i.supaimg.com/beb14e1c-e9af-4e8f-ac6a-6abb632c56a7.jpg" 
+                             alt="Preview of Digital Clock" 
+                             class="project-image"
+                             onerror="this.onerror=null; this.src='https://placehold.co/400x300/374151/ffffff?text=Digital+Clock';">
+                    </div>
+                    <div class="p-5 flex flex-col justify-between flex-grow">
+                        <div>
+                            <h3 class="text-xl font-bold text-secondary mb-2">Digital Clock</h3>
+                            <p class="text-sm text-gray-600 mb-4">
+                                A real-time digital clock display application that dynamically updates the current time using JavaScript's Date object and continuous interval timing.
+                            </p>
+                        </div>
+                        <a href="https://jayr012.github.io/Digital-Clock/?authuser=0" target="_blank" class="flex items-center text-primary hover:text-secondary font-medium mt-auto">
+                            View Project <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="project-card-visual bg-container-light flex flex-col">
+                    <div class="project-image-container">
+                        <img src="https://i.supaimg.com/1f329a8c-f445-4945-bdcd-5a81aec17dd4.jpg" 
+                             alt="Preview of Student Registration Form (jQuery)" 
+                             class="project-image"
+                             onerror="this.onerror=null; this.src='https://placehold.co/400x300/374151/ffffff?text=Reg+Form+jQuery';">
+                    </div>
+                    <div class="p-5 flex flex-col justify-between flex-grow">
+                        <div>
+                            <h3 class="text-xl font-bold text-secondary mb-2">Student Registration Form (jQuery)</h3>
+                            <p class="text-sm text-gray-600 mb-4">
+                                A streamlined registration form using jQuery to enhance form submission, dynamic field management, and user interaction feedback.
+                            </p>
+                        </div>
+                        <a href="https://jayr012.github.io/StudentRegistrationForm-jQuery/?authuser=0" target="_blank" class="flex items-center text-primary hover:text-secondary font-medium mt-auto">
+                            View Project <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="project-card-visual bg-container-light flex flex-col">
+                    <div class="project-image-container">
+                        <img src="https://i.supaimg.com/28e2197a-0502-46ae-b48a-cf3190da7742.jpg" 
+                             alt="Preview of Dynamic Quiz App" 
+                             class="project-image"
+                             onerror="this.onerror=null; this.src='https://placehold.co/400x300/374151/ffffff?text=Dynamic+Quiz';">
+                    </div>
+                    <div class="p-5 flex flex-col justify-between flex-grow">
+                        <div>
+                            <h3 class="text-xl font-bold text-secondary mb-2">Dynamic Quiz App</h3>
+                            <p class="text-sm text-gray-600 mb-4">
+                                A comprehensive quiz application that loads questions dynamically, tracks user scores, and manages the multi-step flow from start to final results.
+                            </p>
+                        </div>
+                        <a href="https://jayr012.github.io/Dynamic-Quiz/?authuser=0" target="_blank" class="flex items-center text-primary hover:text-secondary font-medium mt-auto">
+                            View Project <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="project-card-visual bg-container-light flex flex-col">
+                    <div class="project-image-container">
+                        <img src="https://i.supaimg.com/43bb7608-1f00-4d32-b483-e118a4fed992.jpg" 
+                             alt="Preview of Registration Form Validator" 
+                             class="project-image"
+                             onerror="this.onerror=null; this.src='https://placehold.co/400x300/374151/ffffff?text=Form+Validator';">
+                    </div>
+                    <div class="p-5 flex flex-col justify-between flex-grow">
+                        <div>
+                            <h3 class="text-xl font-bold text-secondary mb-2">Registration Form Validator</h3>
+                            <p class="text-sm text-gray-600 mb-4">
+                                A dedicated validation tool that uses JavaScript and PHP with MySQL to check and enforce complex field rules (e.g., email format, password strength) on a registration form before submission.
+                            </p>
+                        </div>
+                        <a href="https://registration-form-validator.gamer.gd/?authuser=0" target="_blank" class="flex items-center text-primary hover:text-secondary font-medium mt-auto">
+                            View Project <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contacts" class="content-section">
+            <h2 class="text-4xl font-bold text-primary mb-8 border-b pb-3">Contact Information</h2>
+            
+            <div class="bg-container-light p-6 rounded-xl shadow-lg border-l-4 border-secondary max-w-lg mx-auto">
+                <p class="text-xl font-semibold mb-4 flex items-center">
+                    <i data-lucide="contact" class="w-6 h-6 mr-3 text-secondary"></i> Get in Touch
+                </p>
+                <div class="space-y-3">
+                    <p class="text-gray-600 text-lg flex items-center">
+                        <i data-lucide="smartphone" class="w-5 h-5 mr-3 text-primary"></i> 
+                        <span class="font-semibold mr-2">Mobile 1:</span> 09285355323
+                    </p>
+                    <p class="text-gray-600 text-lg flex items-center">
+                        <i data-lucide="smartphone" class="w-5 h-5 mr-3 text-primary"></i> 
+                        <span class="font-semibold mr-2">Mobile 2:</span> 09922858971
+                    </p>
+                    <p class="text-gray-600 text-lg flex items-center">
+                        <i data-lucide="mail" class="w-5 h-5 mr-3 text-primary"></i> 
+                        <span class="font-semibold mr-2">Email 1:</span> 
+                        <a href="mailto:jayrhernane111@gmail.com" class="hover:text-secondary transition duration-150">jayrhernane111@gmail.com</a>
+                    </p>
+                    <p class="text-gray-600 text-lg flex items-center">
+                        <i data-lucide="mail" class="w-5 h-5 mr-3 text-primary"></i> 
+                        <span class="font-semibold mr-2">Email 2:</span> 
+                        <a href="mailto:jayrhernane012@gmail.com" class="hover:text-secondary transition duration-150">jayrhernane012@gmail.com</a>
+                    </p>
+                    <p class="text-sm text-gray-500 pt-4 italic">
+                        Feel free to reach out via text or call for inquiries regarding my portfolio or collaborations.
+                    </p>
+                </div>
+            </div>
+        </section>
+        
+        <footer class="mt-16 pt-6 border-t border-gray-300 text-center">
+            <p class="text-gray-500 text-sm">
+                © 2025 Jay-r Hernane. All rights reserved.
+            </p>
+        </footer>
+    </main>
 
     <div id="certificate-modal" style="display: none;">
         <span id="modal-close">×</span>
@@ -602,18 +594,32 @@
         // Initialize Lucide icons
         lucide.createIcons();
 
-        // Get all navigation links and content sections
-        const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
-        const contentSections = document.querySelectorAll('.content-section');
+        // Get all navigation links
+        const navLinksDesktop = document.querySelectorAll('#main-header .nav-link');
+        const navLinksMobile = document.querySelectorAll('#overlay-menu .nav-link-mobile');
         const sections = document.querySelectorAll('section');
+
+        // Menu elements
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuClose = document.getElementById('menu-close');
+        const overlayMenu = document.getElementById('overlay-menu');
 
         // Modal elements
         const modal = document.getElementById('certificate-modal');
         const modalContent = document.getElementById('modal-content');
         const modalClose = document.getElementById('modal-close');
-        const certCards = document.querySelectorAll('.certificate-card');
-        const viewCertBtns = document.querySelectorAll('.view-cert-btn'); // Selector for view buttons
+        const viewCertBtns = document.querySelectorAll('.view-cert-btn');
 
+        // --- Menu Toggle Logic ---
+        menuToggle.addEventListener('click', () => {
+            overlayMenu.classList.add('open');
+        });
+
+        menuClose.addEventListener('click', () => {
+            overlayMenu.classList.remove('open');
+        });
+
+        // --- Navigation Logic ---
 
         /**
          * Smoothly scrolls to the target section and updates navigation highlights.
@@ -622,8 +628,19 @@
         function scrollToSection(targetId) {
             const targetSection = document.getElementById(targetId);
             if (targetSection) {
-                targetSection.scrollIntoView({ behavior: 'smooth' });
-                // Manually update the hash after scrolling to keep the URL correct
+                // Close the mobile menu if open
+                overlayMenu.classList.remove('open'); 
+                
+                // Scroll to target, adjusting for the fixed header height (approx 64-80px)
+                const headerHeight = document.getElementById('main-header').offsetHeight;
+                const targetPosition = targetSection.offsetTop - headerHeight;
+
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+
+                // Manually update the hash after scrolling
                 history.pushState(null, '', '#' + targetId);
             }
         }
@@ -632,11 +649,9 @@
          * Updates the navigation links based on the section currently in view.
          */
         function highlightActiveSection() {
-            let currentActive = 'home'; // Default to home
-
-            // Use a slight offset to determine which section is "active"
-            // The value 100 accounts for padding/margins and the fixed top nav on desktop
-            const offset = 100;
+            let currentActive = 'home'; 
+            // Offset accounts for the fixed header height
+            const offset = document.getElementById('main-header').offsetHeight + 10;
 
             sections.forEach(section => {
                 const rect = section.getBoundingClientRect();
@@ -646,28 +661,28 @@
                 }
             });
 
-            // Update all navigation links
-            navLinks.forEach(link => {
+            // Update all desktop navigation links
+            navLinksDesktop.forEach(link => {
                 const targetId = link.getAttribute('href').replace('#', '');
-                
                 link.classList.remove('active');
-                if (link.classList.contains('mobile-nav-link')) {
-                    link.classList.remove('text-secondary');
-                    link.classList.add('text-gray-400');
-                }
-
                 if (targetId === currentActive) {
                     link.classList.add('active');
-                    if (link.classList.contains('mobile-nav-link')) {
-                        link.classList.add('text-secondary');
-                        link.classList.remove('text-gray-400');
-                    }
+                }
+            });
+            
+            // Update all mobile navigation links
+            navLinksMobile.forEach(link => {
+                const targetId = link.getAttribute('href').replace('#', '');
+                link.classList.remove('active');
+                if (targetId === currentActive) {
+                    link.classList.add('active');
                 }
             });
         }
 
-        // Add event listeners for link clicks to scroll instead of hide/show
-        navLinks.forEach(link => {
+        // Add event listeners for link clicks to scroll
+        const allNavLinks = [...navLinksDesktop, ...navLinksMobile];
+        allNavLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const targetId = link.getAttribute('href').replace('#', '');
@@ -678,19 +693,20 @@
         // Event listener for scroll to highlight the current section
         window.addEventListener('scroll', highlightActiveSection);
 
-        // Initial highlighting on page load based on the URL hash or default
+        // Initial highlighting and scroll on page load
         function initializePage() {
             const hash = window.location.hash.replace('#', '');
             const defaultSection = (hash && document.getElementById(hash)) ? hash : 'home';
-            // Scroll to the initial section if there is a hash
+            
             if (hash) {
-                // Use setTimeout to allow the browser to render the layout first
                 setTimeout(() => {
-                    document.getElementById(defaultSection).scrollIntoView();
-                    highlightActiveSection(); // Manually set active for initial load before scroll
+                    const headerHeight = document.getElementById('main-header').offsetHeight;
+                    const targetPosition = document.getElementById(defaultSection).offsetTop - headerHeight;
+                    window.scrollTo({ top: targetPosition, behavior: 'auto' });
+                    highlightActiveSection(); 
                 }, 0);
             } else {
-                highlightActiveSection(); // Set active for 'home' by default
+                highlightActiveSection(); 
             }
         }
 
@@ -706,10 +722,8 @@
         // Event listener for VIEW buttons to open the modal
         viewCertBtns.forEach(button => {
             button.addEventListener('click', (e) => {
-                // Stop event from propagating up to potentially interfere with other listeners
                 e.stopPropagation(); 
                 
-                // Find the closest certificate-card parent to get the URL
                 const card = e.target.closest('.certificate-card');
                 if (card) {
                     const certUrl = card.getAttribute('data-certificate-url');
@@ -733,7 +747,7 @@
             }
         });
 
-        // --- Download Logic (NEW: Force cross-origin/local download using Fetch API) ---
+        // --- Download Logic (Kept the same, still requires correct file structure) ---
 
         /**
          * Forces a download of a file by fetching it as a Blob.
@@ -742,43 +756,31 @@
          */
         async function forceDownload(url, filename) {
             try {
-                // 1. Fetch the resource.
-                // The 'mode: cors' is important for cross-origin resources, 
-                // but can be omitted for local files (like the PDFs should be now).
                 const response = await fetch(url, { mode: 'cors' });
                 if (!response.ok) {
-                    // Alert the user if the file could not be fetched (e.g., 404 Not Found)
                     throw new Error(`Download failed. Check if the file is correctly uploaded at: ${url}`);
                 }
 
-                // 2. Get the response body as a Blob (binary data)
                 const blob = await response.blob();
-
-                // 3. Create a temporary URL for the Blob
                 const blobUrl = URL.createObjectURL(blob);
-
-                // 4. Create a temporary anchor element
                 const tempLink = document.createElement('a');
                 tempLink.style.display = 'none';
                 tempLink.href = blobUrl;
-                tempLink.download = filename; // Set the desired file name
+                tempLink.download = filename; 
 
-                // 5. Append to body, click it, and remove it
                 document.body.appendChild(tempLink);
                 tempLink.click();
                 document.body.removeChild(tempLink);
 
-                // 6. Release the Blob URL
                 URL.revokeObjectURL(blobUrl);
 
             } catch (error) {
                 console.error('Download failed:', error);
-                // Fallback message for user
                 alert('Download failed! Please ensure all certificate files are in a folder named "certificates" next to your index.html file. Error: ' + error.message);
             }
         }
 
-        // Event listener for the new Download buttons
+        // Event listener for the Download buttons
         const downloadCertBtns = document.querySelectorAll('.download-cert-btn');
         downloadCertBtns.forEach(button => {
             button.addEventListener('click', (e) => {
@@ -790,6 +792,7 @@
                 }
             });
         });
+
 
         // Run initialization on load
         document.addEventListener('DOMContentLoaded', initializePage);
