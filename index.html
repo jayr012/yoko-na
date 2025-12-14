@@ -44,8 +44,10 @@
             font-weight: 500;
             color: #374151; /* Dark text for contrast */
         }
+        
+        /* --- MODIFIED: Ensure active link text and underline are primary violet --- */
         .nav-link.active {
-            color: '#7c3aed'; /* Primary violet color for active link */
+            color: #7c3aed; /* Primary violet color for active link text */
             font-weight: 700;
         }
         .nav-link.active::after {
@@ -56,7 +58,7 @@
             transform: translateX(-50%);
             width: 80%;
             height: 3px;
-            background-color: '#7c3aed';
+            background-color: #7c3aed; /* Primary violet for underline */
             border-radius: 2px;
         }
 
@@ -183,6 +185,7 @@
             <a href="#home" class="transition-colors duration-150">
                 <span class="logo-text">JH</span>
             </a>
+            
             <nav class="hidden lg:block">
                 <ul class="flex space-x-6">
                     <li><a href="#home" class="nav-link transition active">Home</a></li>
@@ -342,10 +345,10 @@
                         <h3 class="text-xl font-bold text-primary mb-1">HTML Essentials (Cisco)</h3>
                         <p class="text-sm text-gray-600">Cisco Networking Academy</p>
                         <div class="mt-3 flex justify-between items-center w-full">
-                            <button class="view-cert-btn inline-flex items-center text-secondary hover:text-primary font-medium text-sm">
+                            <button class="view-cert-btn inline-flex items-center text-primary hover:text-secondary font-medium text-sm">
                                 View <i data-lucide="maximize" class="w-4 h-4 ml-1"></i>
                             </button>
-                            <button class="download-cert-btn inline-flex items-center text-primary hover:text-secondary font-medium text-sm"
+                            <button class="download-cert-btn inline-flex items-center text-secondary hover:text-primary font-medium text-sm"
                                     data-download-url="./certificates/HTML_Essentials_certificate_jayrhernane012-gmail-com_011c34ba-ac39-44e8-aff4-4d9d490e4afd.pdf"
                                     data-file-name="Jayr_W_Hernane_HTML_Essentials_Cisco.pdf">
                                 <i data-lucide="download" class="w-4 h-4 mr-1"></i> Download
@@ -363,10 +366,10 @@
                         <h3 class="text-xl font-bold text-primary mb-1">CSS Essentials (Cisco)</h3>
                         <p class="text-sm text-gray-600">Cisco Networking Academy</p>
                         <div class="mt-3 flex justify-between items-center w-full">
-                            <button class="view-cert-btn inline-flex items-center text-secondary hover:text-primary font-medium text-sm">
+                            <button class="view-cert-btn inline-flex items-center text-primary hover:text-secondary font-medium text-sm">
                                 View <i data-lucide="maximize" class="w-4 h-4 ml-1"></i>
                             </button>
-                            <button class="download-cert-btn inline-flex items-center text-primary hover:text-secondary font-medium text-sm"
+                            <button class="download-cert-btn inline-flex items-center text-secondary hover:text-primary font-medium text-sm"
                                     data-download-url="./certificates/CSS_Essentials_certificate_jayrhernane012-gmail-com_99fdc7ac-11dc-448a-ae40-a96f1ac505e1.pdf"
                                     data-file-name="Jayr_W_Hernane_CSS_Essentials_Cisco.pdf">
                                 <i data-lucide="download" class="w-4 h-4 mr-1"></i> Download
@@ -384,10 +387,10 @@
                         <h3 class="text-xl font-bold text-primary mb-1">JavaScript Essentials 1 (Cisco)</h3>
                         <p class="text-sm text-gray-600">Cisco Networking Academy</p>
                         <div class="mt-3 flex justify-between items-center w-full">
-                            <button class="view-cert-btn inline-flex items-center text-secondary hover:text-primary font-medium text-sm">
+                            <button class="view-cert-btn inline-flex items-center text-primary hover:text-secondary font-medium text-sm">
                                 View <i data-lucide="maximize" class="w-4 h-4 ml-1"></i>
                             </button>
-                            <button class="download-cert-btn inline-flex items-center text-primary hover:text-secondary font-medium text-sm"
+                            <button class="download-cert-btn inline-flex items-center text-secondary hover:text-primary font-medium text-sm"
                                     data-download-url="./certificates/JavaScript_Essentials_1_certificate_jayrhernane012-gmail-com_7387bc47-7196-4afb-bab2-391943abcbb2.pdf"
                                     data-file-name="Jayr_W_Hernane_JavaScript_Essentials_1_Cisco.pdf">
                                 <i data-lucide="download" class="w-4 h-4 mr-1"></i> Download
